@@ -247,6 +247,8 @@ class TetrisScene(gamebasics.Scene, object):
         self.rotatedelaymax = 4
         self.refertime      = 0
         self.accumtime      = 0
+        self.currmusic      = 1
+        self.musics         = []
         self.grid           = None
 
         # pygame.key.set_repeat(1, 75)
@@ -299,6 +301,17 @@ class TetrisScene(gamebasics.Scene, object):
             else:
                 self.refertime = pygame.time.get_ticks()
                 pygame.mixer.music.unpause()
+
+
+    def switch_music(self, inc):
+        """Switches the background music.
+        """
+        self.currmusic = (self.currmusic + inc) % len(self.musics)
+        if self.currmusic == 0:
+            pygame.mixer.music.stop()
+        else:
+            pygame.mixer.music.load(self.musics[self.currmusic])
+            pygame.mixer.music.play(-1)
 
 
     def get_elapsed_time(self):
@@ -476,7 +489,7 @@ class TetrisScene(gamebasics.Scene, object):
         print('Game Over')
 
 
-    # Overwritten methods -----------------------------------------------------
+    # Overridden methods -----------------------------------------------------
 
     def load(self):
         """See the docs for gamebasics.Scene.load.
@@ -505,7 +518,10 @@ class TetrisScene(gamebasics.Scene, object):
         scoresound = pygame.mixer.Sound(filename)
         self.add_resource('sound', 'ScoreSound', scoresound)
 
-        filename = os.path.join('music', 'Tetris.mp3')
+        self.musics = ['', # no music
+                       os.path.join('music', 'Tetris1.mp3'),
+                       os.path.join('music', 'Tetris2.mp3')]
+        filename = self.musics[self.currmusic]
         pygame.mixer.music.load(filename)
 
 
@@ -519,6 +535,11 @@ class TetrisScene(gamebasics.Scene, object):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.toggle_pause()
+                elif not self.paused:
+                    if event.key == pygame.K_m:
+                        self.switch_music(1)
+                    elif event.key == pygame.K_n:
+                        self.switch_music(-1)
                 # elif event.key == pygame.K_UP:
                 #     self.currtetri.rotate()
                 # elif event.key == pygame.K_DOWN:

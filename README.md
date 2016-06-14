@@ -9,3 +9,5 @@ Input commands:
 * Up arrow: rotate
 * Down arrow: quick fall
 * Enter/Return: pause
+* M: Next music (or mute)
+* N: Previous music (or mute)
