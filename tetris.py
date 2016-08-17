@@ -494,6 +494,10 @@ class TetrisScene(gamebasics.Scene, object):
     def load(self):
         """See the docs for gamebasics.Scene.load.
         """
+        filename = os.path.join('images', 'bg.png')
+        bgimage = pygame.image.load(filename)
+        self.add_resource('image', 'BgImage', bgimage)
+
         filename = os.path.join('fonts', 'thirteen-pixel-fonts.regular.ttf')
         titlefont = pygame.font.Font(filename, 54)
         self.add_resource('font', 'TitleFont', titlefont)
@@ -596,7 +600,11 @@ class TetrisScene(gamebasics.Scene, object):
         white = (255, 255, 255)
 
         # Clear screen.
-        self.game.screen.fill(black)
+        # self.game.screen.fill(black)
+        
+        # Draw the background.
+        bgimage = self.get_resource('image', 'BgImage')
+        self.game.screen.blit(bgimage, bgimage.get_rect())
 
         # Draw the title label.
         titlefont = self.get_resource('font', 'TitleFont')
@@ -651,6 +659,7 @@ class TetrisScene(gamebasics.Scene, object):
 
         # Draw the next tetrimino background square.
         square = pygame.Rect(75, 95, 125, 190)
+        pygame.draw.rect(self.game.screen, black, square, 0)
         pygame.draw.rect(self.game.screen, white, square, 1)
 
         # # Draw the grid blocks.
@@ -664,6 +673,7 @@ class TetrisScene(gamebasics.Scene, object):
 
         # Draw the grid background square.
         square = pygame.Rect(274, 24, 251, 501)
+        pygame.draw.rect(self.game.screen, black, square, 0)
         pygame.draw.rect(self.game.screen, white, square, 1)
 
         # Draw the grid blocks.

@@ -11,3 +11,5 @@ Input commands:
 * Enter/Return: pause
 * M: Next music (or mute)
 * N: Previous music (or mute)
+
+![Screenshot](images/screenshot.png)
